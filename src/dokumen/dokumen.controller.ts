@@ -7,17 +7,21 @@ import {
   Delete,
   Put,
   UseGuards,
-  Req,
+  Request,
   UploadedFile,
   UseInterceptors,
   BadRequestException,
+  Req,
 } from '@nestjs/common';
+
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DokumenService } from './dokumen.service';
 import { CreateDokumenDto } from './dto/create-dokumen.dto';
 import { UpdateDokumenDto } from './dto/update-dokumen.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
-import { Express } from 'express';
+
+// 🔥 INI FIXNYA
+import type { Express } from 'express';
 
 // 🔥 typing user biar aman
 interface AuthRequest extends Request {
