@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  username  String   @unique
+  email     String   @unique
+  password  String
+
+  dokumen   Dokumen[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Rak {
+  id      String @id @default(uuid())
+  namaRak String
+  lokasi  String
+
+  boxes   Box[]
+}
+
+model Box {
+  id      String @id @default(uuid())
+  kodeBox String @unique
+
+  rakId   String
+  rak     Rak    @relation(fields: [rakId], references: [id])
+
+  dokumen Dokumen[]
+}
+
+model Dokumen {
+  id              String   @id @default(uuid())
+  nomorDokumen    String   @unique
+  tanggalMasuk    DateTime
+  tanggalKeluar   DateTime
+  divisi          String
+  deskripsi       String   @db.VarChar(150)
+  fileUrl String?
+
+  boxId           String
+  box             Box      @relation(fields: [boxId], references: [id])
+
+  createdById     String
+  createdBy       User     @relation(fields: [createdById], references: [id])
+
+  createdAt       DateTime @default(now())
+}
