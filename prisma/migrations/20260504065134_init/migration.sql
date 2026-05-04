@@ -40,6 +40,7 @@ CREATE TABLE `Dokumen` (
     `tanggalKeluar` DATETIME(3) NOT NULL,
     `divisi` VARCHAR(191) NOT NULL,
     `deskripsi` VARCHAR(150) NOT NULL,
+    `fileUrl` VARCHAR(191) NULL,
     `boxId` VARCHAR(191) NOT NULL,
     `createdById` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
