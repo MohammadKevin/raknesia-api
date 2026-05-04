@@ -30,7 +30,14 @@ export class DokumenService {
 
     return this.prisma.dokumen.create({
       data: {
-        ...dto,
+        nomorDokumen: dto.nomorDokumen,
+        tanggalMasuk: new Date(dto.tanggalMasuk),
+        tanggalKeluar: dto.tanggalKeluar
+          ? new Date(dto.tanggalKeluar)
+          : undefined,
+        divisi: dto.divisi,
+        deskripsi: dto.deskripsi,
+        boxId: dto.boxId,
         createdById: userId,
       },
       include: {
@@ -43,19 +50,15 @@ export class DokumenService {
     });
   }
 
-  async findAll() {
+  async findAll(userId: string) {
     return this.prisma.dokumen.findMany({
+      where: {
+        createdById: userId,
+      },
       include: {
         box: {
           include: {
             rak: true,
-          },
-        },
-        createdBy: {
-          select: {
-            id: true,
-            username: true,
-            email: true,
           },
         },
       },
@@ -72,13 +75,6 @@ export class DokumenService {
         box: {
           include: {
             rak: true,
-          },
-        },
-        createdBy: {
-          select: {
-            id: true,
-            username: true,
-            email: true,
           },
         },
       },
@@ -122,7 +118,16 @@ export class DokumenService {
 
     return this.prisma.dokumen.update({
       where: { id },
-      data: dto,
+      data: {
+        nomorDokumen: dto.nomorDokumen,
+        tanggalMasuk: dto.tanggalMasuk ? new Date(dto.tanggalMasuk) : undefined,
+        tanggalKeluar: dto.tanggalKeluar
+          ? new Date(dto.tanggalKeluar)
+          : undefined,
+        divisi: dto.divisi,
+        deskripsi: dto.deskripsi,
+        boxId: dto.boxId,
+      },
       include: {
         box: {
           include: {

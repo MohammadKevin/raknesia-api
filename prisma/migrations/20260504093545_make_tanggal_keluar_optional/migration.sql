@@ -37,7 +37,7 @@ CREATE TABLE `Dokumen` (
     `id` VARCHAR(191) NOT NULL,
     `nomorDokumen` VARCHAR(191) NOT NULL,
     `tanggalMasuk` DATETIME(3) NOT NULL,
-    `tanggalKeluar` DATETIME(3) NOT NULL,
+    `tanggalKeluar` DATETIME(3) NULL,
     `divisi` VARCHAR(191) NOT NULL,
     `deskripsi` VARCHAR(150) NOT NULL,
     `fileUrl` VARCHAR(191) NULL,

@@ -48,7 +48,7 @@ model Dokumen {
   id              String   @id @default(uuid())
   nomorDokumen    String   @unique
   tanggalMasuk    DateTime
-  tanggalKeluar   DateTime
+  tanggalKeluar DateTime?
   divisi          String
   deskripsi       String   @db.VarChar(150)
   fileUrl String?

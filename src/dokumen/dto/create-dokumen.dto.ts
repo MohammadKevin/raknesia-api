@@ -1,4 +1,10 @@
-import { IsString, IsDateString, MinLength, MaxLength } from 'class-validator';
+import {
+  IsString,
+  IsDateString,
+  MinLength,
+  MaxLength,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateDokumenDto {
   @IsString()
@@ -8,8 +14,9 @@ export class CreateDokumenDto {
   @IsDateString()
   tanggalMasuk!: string;
 
+  @IsOptional()
   @IsDateString()
-  tanggalKeluar!: string;
+  tanggalKeluar?: string;
 
   @IsString()
   @MinLength(2)
