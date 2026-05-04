@@ -7,7 +7,7 @@ import {
   Delete,
   Put,
   UseGuards,
-  Request,
+  Req,
   UploadedFile,
   UseInterceptors,
   BadRequestException,
@@ -17,44 +17,58 @@ import { DokumenService } from './dokumen.service';
 import { CreateDokumenDto } from './dto/create-dokumen.dto';
 import { UpdateDokumenDto } from './dto/update-dokumen.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { Express } from 'express';
+
+// 🔥 typing user biar aman
+interface AuthRequest extends Request {
+  user: {
+    id: string;
+  };
+}
 
 @Controller('dokumen')
 @UseGuards(JwtAuthGuard)
 export class DokumenController {
   constructor(private readonly dokumenService: DokumenService) {}
 
+  // ================= CREATE =================
   @Post()
-  create(@Body() dto: CreateDokumenDto, @Request() req) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+  create(@Body() dto: CreateDokumenDto, @Req() req: AuthRequest) {
     return this.dokumenService.create(dto, req.user.id);
   }
 
+  // ================= GET ALL =================
   @Get()
-  findAll(@Request() req) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+  findAll(@Req() req: AuthRequest) {
     return this.dokumenService.findAll(req.user.id);
   }
 
+  // ================= GET BY ID =================
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.dokumenService.findById(id);
   }
 
+  // ================= UPDATE =================
   @Put(':id')
   update(@Param('id') id: string, @Body() dto: UpdateDokumenDto) {
     return this.dokumenService.update(id, dto);
   }
 
+  // ================= DELETE =================
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.dokumenService.remove(id);
   }
 
-  // 🔥 UPLOAD FILE (FIXED)
+  // ================= UPLOAD FILE =================
   @Post(':id/upload')
   @UseInterceptors(
     FileInterceptor('file', {
-      dest: './uploads', // pastikan folder ada
+      dest: './uploads', // 🔥 pastikan folder ada
+      limits: {
+        fileSize: 5 * 1024 * 1024, // max 5MB
+      },
     }),
   )
   uploadFile(
